@@ -27,9 +27,9 @@ void setup() {  // set up sensors and begin
   ledcSetup(pwmChanLB, freq, res);
   ledcAttachPin(A1, pwmChanLB);
   ledcSetup(pwmChanRF, freq, res);
-  ledcAttachPin(A2, pwmChanRF);
+  ledcAttachPin(21, pwmChanRF);
   ledcSetup(pwmChanRB, freq, res);
-  ledcAttachPin(A3, pwmChanRB);
+  ledcAttachPin(A5, pwmChanRB);
   
   // set up three ultrasonic sensors
   pinMode(pingPinY, OUTPUT);
