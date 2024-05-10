@@ -18,7 +18,7 @@ const int pingPinZ = 27;
 const int echoPinZ = 33;
 // Y is forwards facing sensor
 // X should be first right wall
-// Z shouldn't be used 
+// Z shouldn't be used
 
 void setup() {  // set up sensors and begin
   // set up L and R wheel PWM for forward and back
@@ -30,7 +30,7 @@ void setup() {  // set up sensors and begin
   ledcAttachPin(21, pwmChanRF);
   ledcSetup(pwmChanRB, freq, res);
   ledcAttachPin(A5, pwmChanRB);
-  
+
   // set up three ultrasonic sensors
   pinMode(pingPinY, OUTPUT);
   pinMode(echoPinY, INPUT);
@@ -53,17 +53,15 @@ long durationZ;
 long distanceY;
 long distanceX;
 long distanceZ;
+long prevDistanceY;
+long prevDistanceX;
+long prevDistanceZ;
+long deltaDistanceY;
+long deltaDistanceX;
+long deltaDistanceZ;
 
-int init = 0; 
+int count = 0;
 void loop() { // main logic loop that runs the car
-
-
-  if (init==0) {
-    // go forward a bit
-    // turn right, go forward a bit, find wall
-    init = 1; 
-  }
-
   // each iteration of loop checks all distances
   digitalWrite(pingPinY, HIGH);
   delayMicroseconds(10);
@@ -89,20 +87,48 @@ void loop() { // main logic loop that runs the car
   //Serial.print(durationZ * 1.e-6 * c / 2);
   //Serial.println(" mm in Z");
 
-  
-
   // check forwards distance,
   int block = 0;
 
   // check left wall distance
   int gap = 0;
+  if (count == 0)
+  {
+    // go forward a bit
+    // turn right, go forward a bit, find wall
+    prevDistanceX = distanceX;
+    prevDistanceY = distanceY;
+    prevDistanceZ = distanceZ;
+  }
 
-  
-  // 
-
+  if (count%512 == 0)
+  {
+    deltaDistanceX = distanceX - prevDistanceX;
+    deltaDistanceY = distanceY - prevDistanceY;
+    deltaDistanceZ = distanceZ - prevDistanceZ;
+    prevDistanceX = distanceX;
+    prevDistanceY = distanceY;
+    prevDistanceZ = distanceZ;
+    // Use the deltaDistance to make a minor correction
+    if (deltaDistanceX > 50)
+    {
+      // Turn right a bit based on the deltaDistance
+      turn((int)(deltaDistanceX/10));
+    }
+    else if (deltaDistanceZ > 50)
+    {
+      // Turn left a bit based on the deltaDistance
+      turn((int)(-deltaDistanceZ/10));
+    }
+    else
+    {
+      // Do nothing
+    }
+  }
+  count++;
 }
 
-void turn(int degrees) { 
+void turn(int degrees) {
   // ledcWrite(pwmChan, 0);
 }
 
