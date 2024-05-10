@@ -152,7 +152,7 @@ void turn(int degrees) {
 
   } else if (degrees < 0) {
     // turn left
-    ledcWrite(pwmChanRF, 150);
+    ledcWrite(pwmChanRF, 255);
     ledcWrite(pwmChanLB, 150);
     delay(turndur);
     // stop turn
