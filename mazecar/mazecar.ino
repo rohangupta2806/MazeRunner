@@ -128,9 +128,41 @@ void loop() { // main logic loop that runs the car
   count++;
 }
 
-void turn(int degrees) {
-  // ledcWrite(pwmChan, 0);
-}
+void turn(int degrees) { 
+  // first, stop all wheel motion
+  ledcWrite(pwmChanLF, 0);
+  ledcWrite(pwmChanLB, 0);
+  ledcWrite(pwmChanRF, 0);
+  ledcWrite(pwmChanRB, 0);
+
+  // calculate duration of turn based on angle
+  int dur90 = 10000; 
+  float ratio = (abs(degrees) / 90) * dur90;
+  int turndur = (int)ratio;
+
+
+  if (degrees > 0) {
+    // turn right
+    ledcWrite(pwmChanLF, 255);
+    ledcWrite(pwmChanRB, 150);
+    delay(turndur);
+    // stop turn
+    ledcWrite(pwmChanLF, 0);
+    ledcWrite(pwmChanRB, 0);
+
+  } else if (degrees < 0) {
+    // turn left
+    ledcWrite(pwmChanRF, 150);
+    ledcWrite(pwmChanLB, 150);
+    delay(turndur);
+    // stop turn
+    ledcWrite(pwmChanRF, 0);
+    ledcWrite(pwmChanLB, 0);
+
+  } else {
+    // do nothing
+    return;
+  }
 
 
 
