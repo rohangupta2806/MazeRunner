@@ -125,10 +125,85 @@ void loop() { // main logic loop that runs the car
       // Do nothing
     }
   }
+  // Check the absolute distance to the wall
+  if (distanceY < 50)
+  {
+    // Check the right wall distance
+    if (distanceX < 100)
+    {
+      // Turn left
+      turn(-90);
+      // Go straight for 1 second before taking more data
+      straight(1000);
+      // Reset the prevDistance
+      prevDistanceX = distanceX;
+      prevDistanceY = distanceY;
+      prevDistanceZ = distanceZ;
+    }
+    else if (distanceX > 200)
+    {
+      // Turn right
+      turn(90);
+      // Go straight for 1 second before taking more data
+      straight(1000);
+      // Reset the prevDistance
+      prevDistanceX = distanceX;
+      prevDistanceY = distanceY;
+      prevDistanceZ = distanceZ;
+    }
+    else
+    {
+      /* You shouldn't get to this stage but you can maybe use
+       the other sensor to get yourself out of this situation */
+      if (distanceZ < 100)
+      {
+        // Turn right
+        turn(90);
+        // Go straight for 1 second before taking more data
+        straight(1000);
+        // Reset the prevDistance
+        prevDistanceX = distanceX;
+        prevDistanceY = distanceY;
+        prevDistanceZ = distanceZ;
+      }
+      else if (distanceZ > 200)
+      {
+        // Turn left
+        turn(-90);
+        // Go straight for 1 second before taking more data
+        straight(1000);
+        // Reset the prevDistance
+        prevDistanceX = distanceX;
+        prevDistanceY = distanceY;
+        prevDistanceZ = distanceZ;
+      }
+      else
+      {
+        // You are really stuck.  Maybe go backwards?
+        back(1000);
+      }
+    }
+  }
   count++;
 }
 
-void turn(int degrees) { 
+void straight(int time) {
+  ledcWrite(pwmChanLF, 255);
+  ledcWrite(pwmChanRF, 255);
+  delay(time);
+  ledcWrite(pwmChanLF, 0);
+  ledcWrite(pwmChanRF, 0);
+}
+
+void back(int time) {
+  ledcWrite(pwmChanLB, 255);
+  ledcWrite(pwmChanRB, 255);
+  delay(time);
+  ledcWrite(pwmChanLB, 0);
+  ledcWrite(pwmChanRB, 0);
+}
+
+void turn(int degrees) {
   // first, stop all wheel motion
   ledcWrite(pwmChanLF, 0);
   ledcWrite(pwmChanLB, 0);
@@ -136,7 +211,7 @@ void turn(int degrees) {
   ledcWrite(pwmChanRB, 0);
 
   // calculate duration of turn based on angle
-  int dur90 = 10000; 
+  int dur90 = 10000;
   float ratio = (abs(degrees) / 90) * dur90;
   int turndur = (int)ratio;
 
