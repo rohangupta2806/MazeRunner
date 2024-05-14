@@ -102,7 +102,7 @@ void loop() { // main logic loop that runs the car
     prevDistanceZ = distanceZ;
   }
 
-  if (count%512 == 0)
+  if (count%64 == 0)
   {
     deltaDistanceX = distanceX - prevDistanceX;
     deltaDistanceY = distanceY - prevDistanceY;
@@ -111,15 +111,15 @@ void loop() { // main logic loop that runs the car
     prevDistanceY = distanceY;
     prevDistanceZ = distanceZ;
     // Use the deltaDistance to make a minor correction
-    if (deltaDistanceX > 50)
+    if (deltaDistanceX > 10)
     {
       // Turn right a bit based on the deltaDistance
-      turn((int)(deltaDistanceX/10));
+      turn((int)(deltaDistanceX/4));
     }
-    else if (deltaDistanceZ > 50)
+    else if (deltaDistanceZ > 10)
     {
       // Turn left a bit based on the deltaDistance
-      turn((int)(-deltaDistanceZ/10));
+      turn((int)(-deltaDistanceZ/4));
     }
     else
     {
@@ -221,7 +221,7 @@ void turn(int degrees) {
   delay(1000); // wait for wheels to stop turning (1s)
 
   // calculate duration of turn based on angle
-  int dur90 = 2500;
+  int dur90 = 1500;
   float ratio = (abs(degrees) / 90) * dur90;
   int turndur = (int)ratio;
 
