@@ -23,9 +23,9 @@ const int echoPinZ = 33;
 void setup() {  // set up sensors and begin
   // set up L and R wheel PWM for forward and back
   ledcSetup(pwmChanLF, freq, res);
-  ledcAttachPin(A0, pwmChanLF);
+  ledcAttachPin(A1, pwmChanLF);
   ledcSetup(pwmChanLB, freq, res);
-  ledcAttachPin(A1, pwmChanLB);
+  ledcAttachPin(A0, pwmChanLB);
   ledcSetup(pwmChanRF, freq, res);
   ledcAttachPin(21, pwmChanRF);
   ledcSetup(pwmChanRB, freq, res);
@@ -96,6 +96,7 @@ void loop() { // main logic loop that runs the car
   {
     // go forward a bit
     // turn right, go forward a bit, find wall
+    delay(10000);
     prevDistanceX = distanceX;
     prevDistanceY = distanceY;
     prevDistanceZ = distanceZ;
