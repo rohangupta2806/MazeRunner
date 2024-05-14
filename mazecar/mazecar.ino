@@ -105,7 +105,7 @@ void loop()
       else
       {
         // Turn left
-        (-90);
+        turn(-90);
         // Go straight for 1 second before taking more data
         straight(1000);
         // Reset the prevDistance by retaking the data
