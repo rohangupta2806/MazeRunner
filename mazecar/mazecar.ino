@@ -189,23 +189,23 @@ void loop() { // main logic loop that runs the car
   else
   {
     // Go straight
-    ledcWrite(pwmChanLF, 120);
-    ledcWrite(pwmChanRF, 120);
+    ledcWrite(pwmChanLF, 150);
+    ledcWrite(pwmChanRF, 150);
   }
   count++;
 }
 
 void straight(int time) {
-  ledcWrite(pwmChanLF, 120);
-  ledcWrite(pwmChanRF, 120);
+  ledcWrite(pwmChanLF, 150);
+  ledcWrite(pwmChanRF, 150);
   delay(time);
   ledcWrite(pwmChanLF, 0);
   ledcWrite(pwmChanRF, 0);
 }
 
 void back(int time) {
-  ledcWrite(pwmChanLB, 120);
-  ledcWrite(pwmChanRB, 120);
+  ledcWrite(pwmChanLB, 150);
+  ledcWrite(pwmChanRB, 150);
   delay(time);
   ledcWrite(pwmChanLB, 0);
   ledcWrite(pwmChanRB, 0);
