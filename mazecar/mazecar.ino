@@ -94,6 +94,7 @@ void loop() { // main logic loop that runs the car
   int gap = 0;
   if (count == 0)
   {
+    delay(10000);
     // go forward a bit
     // turn right, go forward a bit, find wall
     prevDistanceX = distanceX;
@@ -215,7 +216,6 @@ void turn(int degrees) {
   float ratio = (abs(degrees) / 90) * dur90;
   int turndur = (int)ratio;
 
-
   if (degrees > 0) {
     // turn right
     ledcWrite(pwmChanLF, 255);
@@ -238,6 +238,8 @@ void turn(int degrees) {
     // do nothing
     return;
   }
+
+}
 
 
 
