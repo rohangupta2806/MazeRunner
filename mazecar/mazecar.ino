@@ -63,7 +63,6 @@ long deltaDistanceZ;
 int count = 0;
 void loop()
 { // main logic loop that runs the car
-
   // each iteration of loop checks all distances
   distanceX = takeDataX();
   distanceY = takeDataY();
@@ -81,19 +80,19 @@ void loop()
   // Check the absolute distance to the wall
   if (distanceY < 200)
   {
-    // Check the right wall distance
+    // Check the left wall distance
     if (distanceX < 100)
     {
-      // Turn left
-      turn(-90);
+      // Turn right
+      turn(90);
       // Go straight for 1 second before taking more data
       straight(1000);
       // Reset the prevDistance by retaking the data
     }
     else
     {
-      // Turn right
-      turn(90);
+      // Turn left
+      turn(-90);
       // Go straight for 1 second before taking more data
       straight(1000);
       // Reset the prevDistance
@@ -131,6 +130,8 @@ void loop()
       }
     }
     count++;
+    ledcWrite(pwmChanLF, 175);
+    ledcWrite(pwmChanRF, 175);
   }
 }
 
