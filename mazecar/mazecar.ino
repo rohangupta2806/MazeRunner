@@ -80,25 +80,39 @@ void loop()
   // Check the absolute distance to the wall
   if (distanceY < 200)
   {
-    // Check the left wall distance
+    // Check the right wall distance
     if (distanceX < 100)
     {
-      // Turn right
-      turn(90);
+      // Turn left
+      turn(-90);
       // Go straight for 1 second before taking more data
       straight(1000);
       // Reset the prevDistance by retaking the data
     }
     else
     {
-      // Turn left
-      turn(-90);
-      // Go straight for 1 second before taking more data
-      straight(1000);
-      // Reset the prevDistance
-      prevDistanceX = takeDataX();
-      prevDistanceY = takeDataY();
-      prevDistanceZ = takeDataZ();
+      if (distanceZ > distanceX)
+      {
+        // Turn right, move forward a bit, then turn left
+        turn(90);
+        straight(500);
+        turn(-90);
+        // Reset the prevDistance
+        prevDistanceX = takeDataX();
+        prevDistanceY = takeDataY();
+        prevDistanceZ = takeDataZ();
+      }
+      else
+      {
+        // Turn left
+        (-90);
+        // Go straight for 1 second before taking more data
+        straight(1000);
+        // Reset the prevDistance by retaking the data
+        prevDistanceX = takeDataX();
+        prevDistanceY = takeDataY();
+        prevDistanceZ = takeDataZ();
+      }
     }
   }
   else
