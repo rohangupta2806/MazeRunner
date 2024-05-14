@@ -101,32 +101,6 @@ void loop() { // main logic loop that runs the car
     prevDistanceY = distanceY;
     prevDistanceZ = distanceZ;
   }
-
-  if (count%64 == 0)
-  {
-    deltaDistanceX = distanceX - prevDistanceX;
-    deltaDistanceY = distanceY - prevDistanceY;
-    deltaDistanceZ = distanceZ - prevDistanceZ;
-    prevDistanceX = distanceX;
-    prevDistanceY = distanceY;
-    prevDistanceZ = distanceZ;
-    // Use the deltaDistance to make a minor correction
-    if (deltaDistanceX > 10)
-    {
-      // Turn right a bit based on the deltaDistance
-      turn((int)(deltaDistanceX/4));
-    }
-    else if (deltaDistanceZ > 10)
-    {
-      // Turn left a bit based on the deltaDistance
-      turn((int)(-deltaDistanceZ/4));
-    }
-    else
-    {
-      // Do nothing
-    }
-  }
-
   // Check the absolute distance to the wall
   if (distanceY < 200)
   {
@@ -188,11 +162,34 @@ void loop() { // main logic loop that runs the car
   }
   else
   {
-    // Go straight
-    ledcWrite(pwmChanLF, 175);
-    ledcWrite(pwmChanRF, 175);
+    if (count%64 == 0)
+    {
+      deltaDistanceX = distanceX - prevDistanceX;
+      deltaDistanceY = distanceY - prevDistanceY;
+      deltaDistanceZ = distanceZ - prevDistanceZ;
+      prevDistanceX = distanceX;
+      prevDistanceY = distanceY;
+      prevDistanceZ = distanceZ;
+      // Use the deltaDistance to make a minor correction
+      if (deltaDistanceX > 10)
+      {
+        // Turn right a bit based on the deltaDistance
+        turn((int)(-deltaDistanceX/4));
+      }
+      else if (deltaDistanceZ > 10)
+      {
+        // Turn left a bit based on the deltaDistance
+        turn((int)(deltaDistanceZ/4));
+      }
+      else
+      {
+        // Go straight
+        ledcWrite(pwmChanLF, 175);
+        ledcWrite(pwmChanRF, 175);
+      }
+    }
+    count++;
   }
-  count++;
 }
 
 void straight(int time) {
