@@ -23,9 +23,9 @@ const int echoPinZ = 33;
 void setup() {  // set up sensors and begin
   // set up L and R wheel PWM for forward and back
   ledcSetup(pwmChanLF, freq, res);
-  ledcAttachPin(A1, pwmChanLF);
+  ledcAttachPin(A0, pwmChanLF);
   ledcSetup(pwmChanLB, freq, res);
-  ledcAttachPin(A0, pwmChanLB);
+  ledcAttachPin(A1, pwmChanLB);
   ledcSetup(pwmChanRF, freq, res);
   ledcAttachPin(21, pwmChanRF);
   ledcSetup(pwmChanRB, freq, res);
@@ -94,7 +94,6 @@ void loop() { // main logic loop that runs the car
   int gap = 0;
   if (count == 0)
   {
-    delay(10000);
     // go forward a bit
     // turn right, go forward a bit, find wall
     prevDistanceX = distanceX;
@@ -126,6 +125,7 @@ void loop() { // main logic loop that runs the car
       // Do nothing
     }
   }
+
   // Check the absolute distance to the wall
   if (distanceY < 50)
   {
@@ -145,8 +145,8 @@ void loop() { // main logic loop that runs the car
     {
       // Turn right
       turn(90);
-      // Go straight for 1 second before taking more data
-      straight(1000);
+      // Go straight for 0.5 second before taking more data
+      straight(500);
       // Reset the prevDistance
       prevDistanceX = distanceX;
       prevDistanceY = distanceY;
@@ -161,7 +161,7 @@ void loop() { // main logic loop that runs the car
         // Turn right
         turn(90);
         // Go straight for 1 second before taking more data
-        straight(1000);
+        straight(500);
         // Reset the prevDistance
         prevDistanceX = distanceX;
         prevDistanceY = distanceY;
@@ -172,7 +172,7 @@ void loop() { // main logic loop that runs the car
         // Turn left
         turn(-90);
         // Go straight for 1 second before taking more data
-        straight(1000);
+        straight(500);
         // Reset the prevDistance
         prevDistanceX = distanceX;
         prevDistanceY = distanceY;
@@ -185,22 +185,26 @@ void loop() { // main logic loop that runs the car
       }
     }
   }
-  ledcWrite(pwmChanLF, 150);
-  ledcWrite(pwmChanRF, 150);
+  else
+  {
+    // Go straight
+    ledcWrite(pwmChanLF, 120);
+    ledcWrite(pwmChanRF, 120);
+  }
   count++;
 }
 
 void straight(int time) {
-  ledcWrite(pwmChanLF, 150);
-  ledcWrite(pwmChanRF, 150);
+  ledcWrite(pwmChanLF, 120);
+  ledcWrite(pwmChanRF, 120);
   delay(time);
   ledcWrite(pwmChanLF, 0);
   ledcWrite(pwmChanRF, 0);
 }
 
 void back(int time) {
-  ledcWrite(pwmChanLB, 150);
-  ledcWrite(pwmChanRB, 150);
+  ledcWrite(pwmChanLB, 120);
+  ledcWrite(pwmChanRB, 120);
   delay(time);
   ledcWrite(pwmChanLB, 0);
   ledcWrite(pwmChanRB, 0);
@@ -213,15 +217,18 @@ void turn(int degrees) {
   ledcWrite(pwmChanRF, 0);
   ledcWrite(pwmChanRB, 0);
 
+  delay(1000); // wait for wheels to stop turning (1s)
+
   // calculate duration of turn based on angle
   int dur90 = 2500;
   float ratio = (abs(degrees) / 90) * dur90;
   int turndur = (int)ratio;
 
+
   if (degrees > 0) {
     // turn right
     ledcWrite(pwmChanLF, 255);
-    ledcWrite(pwmChanRB, 150);
+    ledcWrite(pwmChanRB, 255);
     delay(turndur);
     // stop turn
     ledcWrite(pwmChanLF, 0);
@@ -230,7 +237,7 @@ void turn(int degrees) {
   } else if (degrees < 0) {
     // turn left
     ledcWrite(pwmChanRF, 255);
-    ledcWrite(pwmChanLB, 150);
+    ledcWrite(pwmChanLB, 255);
     delay(turndur);
     // stop turn
     ledcWrite(pwmChanRF, 0);
@@ -240,10 +247,7 @@ void turn(int degrees) {
     // do nothing
     return;
   }
-
 }
-
-
 
 
 
