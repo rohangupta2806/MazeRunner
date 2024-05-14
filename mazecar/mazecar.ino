@@ -84,7 +84,7 @@ void loop()
     if (distanceX < 100)
     {
       // Turn left
-      turn(-90);
+      turn(90);
       // Go straight for 1 second before taking more data
       straight(1000);
       // Reset the prevDistance by retaking the data
@@ -94,9 +94,9 @@ void loop()
       if (distanceZ > distanceX)
       {
         // Turn right, move forward a bit, then turn left
-        turn(90);
-        straight(500);
         turn(-90);
+        straight(500);
+        turn(90);
         // Reset the prevDistance
         prevDistanceX = takeDataX();
         prevDistanceY = takeDataY();
@@ -105,7 +105,7 @@ void loop()
       else
       {
         // Turn left
-        turn(-90);
+        turn(90);
         // Go straight for 1 second before taking more data
         straight(1000);
         // Reset the prevDistance by retaking the data
@@ -144,8 +144,6 @@ void loop()
       }
     }
     count++;
-    ledcWrite(pwmChanLF, 175);
-    ledcWrite(pwmChanRF, 175);
   }
 }
 
