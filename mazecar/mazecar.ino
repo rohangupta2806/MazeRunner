@@ -128,10 +128,10 @@ void loop() { // main logic loop that runs the car
   }
 
   // Check the absolute distance to the wall
-  if (distanceY < 50)
+  if (distanceY < 200)
   {
     // Check the right wall distance
-    if (distanceX < 100)
+    if (distanceX < 200)
     {
       // Turn left
       turn(-90);
@@ -142,12 +142,12 @@ void loop() { // main logic loop that runs the car
       prevDistanceY = distanceY;
       prevDistanceZ = distanceZ;
     }
-    else if (distanceX > 200)
+    else if (distanceX > 400)
     {
       // Turn right
       turn(90);
       // Go straight for 0.5 second before taking more data
-      straight(500);
+      straight(1000);
       // Reset the prevDistance
       prevDistanceX = distanceX;
       prevDistanceY = distanceY;
@@ -162,7 +162,7 @@ void loop() { // main logic loop that runs the car
         // Turn right
         turn(90);
         // Go straight for 1 second before taking more data
-        straight(500);
+        straight(1000);
         // Reset the prevDistance
         prevDistanceX = distanceX;
         prevDistanceY = distanceY;
@@ -189,23 +189,23 @@ void loop() { // main logic loop that runs the car
   else
   {
     // Go straight
-    ledcWrite(pwmChanLF, 150);
-    ledcWrite(pwmChanRF, 150);
+    ledcWrite(pwmChanLF, 175);
+    ledcWrite(pwmChanRF, 175);
   }
   count++;
 }
 
 void straight(int time) {
-  ledcWrite(pwmChanLF, 150);
-  ledcWrite(pwmChanRF, 150);
+  ledcWrite(pwmChanLF, 175);
+  ledcWrite(pwmChanRF, 175);
   delay(time);
   ledcWrite(pwmChanLF, 0);
   ledcWrite(pwmChanRF, 0);
 }
 
 void back(int time) {
-  ledcWrite(pwmChanLB, 150);
-  ledcWrite(pwmChanRB, 150);
+  ledcWrite(pwmChanLB, 175);
+  ledcWrite(pwmChanRB, 175);
   delay(time);
   ledcWrite(pwmChanLB, 0);
   ledcWrite(pwmChanRB, 0);
