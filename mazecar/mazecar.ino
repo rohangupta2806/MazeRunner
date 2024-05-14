@@ -23,9 +23,9 @@ const int echoPinZ = 33;
 void setup() {  // set up sensors and begin
   // set up L and R wheel PWM for forward and back
   ledcSetup(pwmChanLF, freq, res);
-  ledcAttachPin(A0, pwmChanLF);
+  ledcAttachPin(A1, pwmChanLF);
   ledcSetup(pwmChanLB, freq, res);
-  ledcAttachPin(A1, pwmChanLB);
+  ledcAttachPin(A0, pwmChanLB);
   ledcSetup(pwmChanRF, freq, res);
   ledcAttachPin(21, pwmChanRF);
   ledcSetup(pwmChanRB, freq, res);
@@ -185,20 +185,22 @@ void loop() { // main logic loop that runs the car
       }
     }
   }
+  ledcWrite(pwmChanLF, 150);
+  ledcWrite(pwmChanRF, 150);
   count++;
 }
 
 void straight(int time) {
-  ledcWrite(pwmChanLF, 255);
-  ledcWrite(pwmChanRF, 255);
+  ledcWrite(pwmChanLF, 150);
+  ledcWrite(pwmChanRF, 150);
   delay(time);
   ledcWrite(pwmChanLF, 0);
   ledcWrite(pwmChanRF, 0);
 }
 
 void back(int time) {
-  ledcWrite(pwmChanLB, 255);
-  ledcWrite(pwmChanRB, 255);
+  ledcWrite(pwmChanLB, 150);
+  ledcWrite(pwmChanRB, 150);
   delay(time);
   ledcWrite(pwmChanLB, 0);
   ledcWrite(pwmChanRB, 0);
