@@ -25,12 +25,12 @@ int go = 0;
 void loop() {
   // put your main code here, to run repeatedly:
   if (go == 0) {
-    delay(5000);
-    straight(10000);
+    delay(10000);
+    straight(5000);
     delay(5000);
     turn(90);
     delay(5000);
-    straight(10000);
+    straight(5000);
     go = 1;
   }
 }
@@ -70,7 +70,7 @@ void turn(int degrees) {
   ledcWrite(pwmChanRB, 0);
 
   // calculate duration of turn based on angle
-  int dur90 = 10000; 
+  int dur90 = 2500; 
   float ratio = (abs(degrees) / 90) * dur90;
   int turndur = (int)ratio;
 
@@ -78,7 +78,7 @@ void turn(int degrees) {
   if (degrees > 0) {
     // turn right
     ledcWrite(pwmChanLF, 255);
-    ledcWrite(pwmChanRB, 150);
+    ledcWrite(pwmChanRB, 255);
     delay(turndur);
     // stop turn
     ledcWrite(pwmChanLF, 0);

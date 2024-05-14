@@ -211,7 +211,7 @@ void turn(int degrees) {
   ledcWrite(pwmChanRB, 0);
 
   // calculate duration of turn based on angle
-  int dur90 = 10000;
+  int dur90 = 2500;
   float ratio = (abs(degrees) / 90) * dur90;
   int turndur = (int)ratio;
 
