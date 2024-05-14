@@ -91,7 +91,7 @@ void loop()
     }
     else
     {
-      if (distanceZ > distanceX)
+      if (distanceZ < distanceX)
       {
         // Turn right, move forward a bit, then turn left
         turn(-90);
