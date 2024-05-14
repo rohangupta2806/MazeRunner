@@ -61,37 +61,14 @@ long deltaDistanceX;
 long deltaDistanceZ;
 
 int count = 0;
-void loop() { // main logic loop that runs the car
+void loop()
+{ // main logic loop that runs the car
+
   // each iteration of loop checks all distances
-  digitalWrite(pingPinY, HIGH);
-  delayMicroseconds(10);
-  digitalWrite(pingPinY, LOW);
-  durationY = pulseIn(echoPinY, HIGH);
-  distanceY = durationY * 1.e-6 * c / 2;
-  //Serial.print(durationY * 1.e-6 * c / 2);
-  //Serial.println(" mm in Y");
+  distanceX = takeDataX();
+  distanceY = takeDataY();
+  distanceZ = takeDataZ();
 
-  digitalWrite(pingPinX, HIGH);
-  delayMicroseconds(10);
-  digitalWrite(pingPinX, LOW);
-  durationX = pulseIn(echoPinX, HIGH);
-  distanceX = durationX * 1.e-6 * c / 2;
-  //Serial.print(durationX * 1.e-6 * c / 2);
-  //Serial.println(" mm in X");
-
-  digitalWrite(pingPinZ, HIGH);
-  delayMicroseconds(10);
-  digitalWrite(pingPinZ, LOW);
-  durationZ = pulseIn(echoPinZ, HIGH);
-  distanceZ = durationZ * 1.e-6 * c / 2;
-  //Serial.print(durationZ * 1.e-6 * c / 2);
-  //Serial.println(" mm in Z");
-
-  // check forwards distance,
-  int block = 0;
-
-  // check left wall distance
-  int gap = 0;
   if (count == 0)
   {
     // go forward a bit
@@ -105,59 +82,24 @@ void loop() { // main logic loop that runs the car
   if (distanceY < 200)
   {
     // Check the right wall distance
-    if (distanceX < 200)
+    if (distanceX < 100)
     {
       // Turn left
       turn(-90);
       // Go straight for 1 second before taking more data
       straight(1000);
-      // Reset the prevDistance
-      prevDistanceX = distanceX;
-      prevDistanceY = distanceY;
-      prevDistanceZ = distanceZ;
-    }
-    else if (distanceX > 400)
-    {
-      // Turn right
-      turn(90);
-      // Go straight for 0.5 second before taking more data
-      straight(1000);
-      // Reset the prevDistance
-      prevDistanceX = distanceX;
-      prevDistanceY = distanceY;
-      prevDistanceZ = distanceZ;
+      // Reset the prevDistance by retaking the data
     }
     else
     {
-      /* You shouldn't get to this stage but you can maybe use
-       the other sensor to get yourself out of this situation */
-      if (distanceZ < 100)
-      {
-        // Turn right
-        turn(90);
-        // Go straight for 1 second before taking more data
-        straight(1000);
-        // Reset the prevDistance
-        prevDistanceX = distanceX;
-        prevDistanceY = distanceY;
-        prevDistanceZ = distanceZ;
-      }
-      else if (distanceZ > 200)
-      {
-        // Turn left
-        turn(-90);
-        // Go straight for 1 second before taking more data
-        straight(500);
-        // Reset the prevDistance
-        prevDistanceX = distanceX;
-        prevDistanceY = distanceY;
-        prevDistanceZ = distanceZ;
-      }
-      else
-      {
-        // You are really stuck.  Maybe go backwards?
-        back(1000);
-      }
+      // Turn right
+      turn(90);
+      // Go straight for 1 second before taking more data
+      straight(1000);
+      // Reset the prevDistance
+      prevDistanceX = takeDataX();
+      prevDistanceY = takeDataY();
+      prevDistanceZ = takeDataZ();
     }
   }
   else
@@ -247,5 +189,31 @@ void turn(int degrees) {
   }
 }
 
+long takeDataX(){
+  digitalWrite(pingPinX, HIGH);
+  delayMicroseconds(10);
+  digitalWrite(pingPinX, LOW);
+  long durationX = pulseIn(echoPinX, HIGH);
+  long distanceX = durationX * 1.e-6 * c / 2;
+  return distanceX;
+}
+
+long takeDataY(){
+  digitalWrite(pingPinY, HIGH);
+  delayMicroseconds(10);
+  digitalWrite(pingPinY, LOW);
+  long durationY = pulseIn(echoPinY, HIGH);
+  long distanceY = durationY * 1.e-6 * c / 2;
+  return distanceY;
+}
+
+long takeDataZ(){
+  digitalWrite(pingPinZ, HIGH);
+  delayMicroseconds(10);
+  digitalWrite(pingPinZ, LOW);
+  long durationZ = pulseIn(echoPinZ, HIGH);
+  long distanceZ = durationZ * 1.e-6 * c / 2;
+  return distanceZ;
+}
 
 
