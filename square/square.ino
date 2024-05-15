@@ -30,7 +30,6 @@ void loop() {
         straight(2000);
         turn(90);
     }
-    return;
 }
 
 void straight(int time) {

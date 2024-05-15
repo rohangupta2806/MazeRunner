@@ -78,36 +78,39 @@ void loop()
     prevDistanceZ = distanceZ;
   }
   // Check the absolute distance to the wall
-  if (distanceY < 200)
+  if (distanceY < 150)
   {
     // Check the right wall distance
-    if (distanceX < 100)
+    if (distanceX < 150)
     {
       // Turn left
-      turn(90);
-      // Go straight for 1 second before taking more data
-      straight(1000);
+      turn(-90);
+      // Go straight for 0.25 seconds before taking more data
+      straight(50);
       // Reset the prevDistance by retaking the data
+      prevDistanceX = takeDataX();
+      prevDistanceY = takeDataY();
+      prevDistanceZ = takeDataZ();
     }
     else
     {
-      if (distanceZ < distanceX)
+      if (distanceZ < 150)
       {
-        // Turn right, move forward a bit, then turn left
+        // Turn left
         turn(-90);
-        straight(500);
-        turn(90);
-        // Reset the prevDistance
+        // Go straight for 0.25 seconds before taking more data
+        straight(50);
+        // Reset the prevDistance by retaking the data
         prevDistanceX = takeDataX();
         prevDistanceY = takeDataY();
         prevDistanceZ = takeDataZ();
       }
       else
       {
-        // Turn left
+        //Turn right
         turn(90);
-        // Go straight for 1 second before taking more data
-        straight(1000);
+        // Go straight for 0.25 seconds before taking more data
+        straight(50);
         // Reset the prevDistance by retaking the data
         prevDistanceX = takeDataX();
         prevDistanceY = takeDataY();
@@ -128,12 +131,12 @@ void loop()
       // Use the deltaDistance to make a minor correction
       if (deltaDistanceX > 10)
       {
-        // Turn right a bit based on the deltaDistance
+        // Turn left a bit based on the deltaDistance
         turn((int)(-deltaDistanceX/4));
       }
       else if (deltaDistanceZ > 10)
       {
-        // Turn left a bit based on the deltaDistance
+        // Turn right a bit based on the deltaDistance
         turn((int)(deltaDistanceZ/4));
       }
       else
@@ -144,6 +147,9 @@ void loop()
       }
     }
     count++;
+    // Go straight
+    ledcWrite(pwmChanLF, 175);
+    ledcWrite(pwmChanRF, 175);
   }
 }
 
@@ -170,10 +176,10 @@ void turn(int degrees) {
   ledcWrite(pwmChanRF, 0);
   ledcWrite(pwmChanRB, 0);
 
-  delay(1000); // wait for wheels to stop turning (1s)
+  delay(100); // wait for wheels to stop turning (1s)
 
   // calculate duration of turn based on angle
-  int dur90 = 1500;
+  int dur90 = 1400;
   float ratio = (abs(degrees) / 90) * dur90;
   int turndur = (int)ratio;
 
