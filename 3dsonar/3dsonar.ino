@@ -1,9 +1,9 @@
-const int pingPinY = 13;
-const int echoPinY = 12;
-const int pingPinX = 27;
-const int echoPinX = 33;
-const int pingPinZ = 15;
-const int echoPinZ = 32;
+const int pingPinY = 15;
+const int echoPinY = 32;
+const int pingPinX = 13;
+const int echoPinX = 12;
+const int pingPinZ = 27;
+const int echoPinZ = 33;
 
 const float c = 3.43e5;
 
