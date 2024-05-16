@@ -55,13 +55,17 @@ long distanceX;
 long distanceZ;
 
 long prevDistX;
+long prevDistY;
+long prevDistZ;
 long newDistX;
 long deltaDistX;
+long deltaDistY;
+long deltaDistZ;
 
 int count = 0;
 void loop()
 { // main logic loop that runs the car
-  
+
   // initial wait
   if (count==0) {
     delay(10000);
@@ -75,55 +79,72 @@ void loop()
 
   // ASSUME THERE IS WALL ON RIGHT AT START
   // maybe write entrance function here
-  
+
   // logic for following wall
-  if (distanceX > 200) {
+  if (distanceX > 200)
+  {
     // if gap in wall, must turn into gap
-    turn(90); 
+    turn(90);
     // go forward a bit to enter gap
     straight(1350);
-    straightReset();
-  } else if (distanceY < 150) {
+    prevDistX = takeDataX();
+    prevDistY = takeDataY();
+    prevDistZ = takeDataZ();
+  }
+  else if (distanceY < 150)
+  {
     // there is a corner in front of us
     turn(-90);
-    straightReset();
-  } else {
-    // there shouldn't be anything here
+    prevDistX = takeDataX();
+    prevDistY = takeDataY();
+    prevDistZ = takeDataZ();
   }
-
+  else
+  {
+    if(count%64 == 0)
+    {
+      // Straightening code
+      deltaDistX = distanceX - prevDistX;
+      deltaDistY = distanceY - prevDistY;
+      deltaDistZ = distanceZ - prevDistZ;
+      prevDistX = distanceX;
+      prevDistY = distanceY;
+      prevDistZ = distanceZ;
+      // Use the deltaDistance to make a minor correction
+      if (deltaDistX > 10)
+      {
+        // Turn left a bit based on the deltaDistance
+        turn((int)(-deltaDistX/4));
+        // Go straight
+        ledcWrite(pwmChanLF, 175);
+        ledcWrite(pwmChanRF, 175);
+      }
+      else if (deltaDistZ > 10)
+      {
+        // Turn right a bit based on the deltaDistance
+        turn((int)(deltaDistZ/4));
+        // Go straight
+        ledcWrite(pwmChanLF, 175);
+        ledcWrite(pwmChanRF, 175);
+      }
+      else
+      {
+        // Go straight
+        ledcWrite(pwmChanLF, 175);
+        ledcWrite(pwmChanRF, 175);
+      }
+    }
+  }
   // default to go straight after making necessary turns
   ledcWrite(pwmChanLF, 175);
   ledcWrite(pwmChanRF, 175);
-
-  // straightening code
-  if (count%10 == 0) {
-    if (prevDistX = 0) {
-      prevDistX = takeDataX();
-    } else {
-      newDistX = takeDataX();
-      deltaDistX = newDistX - prevDistX;
-
-      // we're moving away
-      if (deltaDistX > 10) {
-        //delay(500);
-        //turn(35);
-      } else if (deltaDistX < -10) {
-        //delay(500);
-        //turn(-35);
-      } else {
-        // dont turn
-      }
-      prevDistX = newDistX; 
-    }
-  }
-
   count++;
 }
 
 void straightReset() {
   prevDistX = 0;
   newDistX = 0;
-  deltaDistX = 0; 
+  deltaDistX = 0;
 }
 
 void straight(int time) {
@@ -151,7 +172,7 @@ void turn(int degrees) {
   ledcWrite(pwmChanRF, 0);
   ledcWrite(pwmChanRB, 0);
 
-  delay(100); // wait for wheels to stop turning (1s)
+  delay(100); // wait for wheels to stop turning (0.1s)
 
   // calculate duration of turn based on angle
   int dur90 = 1500;
