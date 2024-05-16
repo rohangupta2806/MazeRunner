@@ -24,9 +24,9 @@ void setup() {
 int go = 0;
 void loop() {
   // put your main code here, to run repeatedly:
+  delay(10000);
   if (go == 0) {
-    straight(15000);
-    go++;
+    straight(10000);
   }
 }
 
@@ -50,7 +50,7 @@ void test4motors() {
 }
 
 void straight(int time) {
-  ledcWrite(pwmChanLF, 255);
+  ledcWrite(pwmChanLF, 254);
   ledcWrite(pwmChanRF, 255);
   delay(time);
   ledcWrite(pwmChanLF, 0);
